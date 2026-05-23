@@ -1,0 +1,21 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 每天 UTC 06:00 自动运行（即北京时间 14:00）
+  workflow_dispatch:        # 也支持手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync Fork with Upstream
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          upstream_sync_repo: Healer-sys/Home
+          upstream_sync_branch: main        # 根据上游主分支名修改
+          target_sync_branch: main          # 你 fork 的目标分支
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
