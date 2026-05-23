@@ -5,20 +5,15 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # 强制使用 Node.js 24，消除警告
+permissions:
+  contents: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Sync Fork with Upstream
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.3   # 升级到最新版
-        with:
-          upstream_sync_repo: Healer-sys/Home
-          upstream_sync_branch: main
-          target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Sync fork with upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh repo sync lslxgh/IPTV-GX -b main
